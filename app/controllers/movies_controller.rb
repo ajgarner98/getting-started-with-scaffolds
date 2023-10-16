@@ -1,20 +1,20 @@
 class MoviesController < ApplicationController
 
   def new
-    render template: "movies/new"
+    #render template: "movies/new"
   end
 
   def edit
     @the_movie = Movie.where(id: params.fetch(:id))[0]
-    render template: "movies/edit"
+    #render template: "movies/edit"
   end
-  
+
   def index
     matching_movies = Movie.all
 
     @list_of_movies = matching_movies.order({ :created_at => :desc })
 
-    render({ :template => "movies/index" })
+    #render({ :template => "movies/index" })
   end
 
   def show
@@ -24,7 +24,7 @@ class MoviesController < ApplicationController
 
     @the_movie = matching_movies[0]
 
-    render({ :template => "movies/show" })
+    #render({ :template => "movies/show" })
   end
 
   def create
@@ -37,7 +37,7 @@ class MoviesController < ApplicationController
       the_movie.save
       redirect_to("/movies", { :notice => "Movie created successfully." })
     else
-      redirect_to("/movies", { :alert => the_movie.errors.full_messages.to_sentence })
+      render template: "movies/with_errors"
     end
   end
 
@@ -50,7 +50,7 @@ class MoviesController < ApplicationController
     the_movie.title = params.fetch("query_title")
     the_movie.description = params.fetch("query_description")
     the_movie.released = params.fetch("query_released", false)
-
+    debugger
     if the_movie.valid?
       the_movie.save
       redirect_to("/movies/#{the_movie.id}", { :notice => "Movie updated successfully."} )
